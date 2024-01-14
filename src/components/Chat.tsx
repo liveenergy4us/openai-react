@@ -41,16 +41,19 @@ const Chat: React.FC = () => {
       tools: [{ 
         type: "function",
         function: {
-          "name" : "make_paapi_call",
-          "parameters" : {
-            "type" : "object",
-            "properties" : {
-              "keywords" : {"type" : "string", "description" : "Three to five keywords for searching the selected gift on Amazon"}
+          name : "make_paapi_call",
+          parameters : {
+            type : "object",
+            properties : {
+              keywords : {
+                type : "string", 
+                description : "Three to five keywords for searching the selected gift on Amazon",
+              },
             },
-            "required": ["keywords"]
+            required: ["keywords"]
           },
-          "description" : "Take in short keywords to find the selected gift on Amazon"
-        }
+          description : "Determine short keywords to find the selected gift on Amazon"
+        },
       }],
     });
 
@@ -81,6 +84,12 @@ const Chat: React.FC = () => {
     // Run the assistant
     const run = await openai.beta.threads.runs.create(thread.id, {
       assistant_id: assistant.id,
+      function_calls: [
+        {
+          name: "make_paapi_call",
+          arguments: JSON.stringify({ keywords: "parsed_keywords_here" }),
+        },
+      ],
     });
 
     // Create a response

@@ -1,3 +1,4 @@
+// src/models/MessageDto.ts
 export class MessageDto {
   isUser: boolean;
   content: string;
